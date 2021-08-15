@@ -61,34 +61,34 @@ public:
 
     // optimized implementation
     template<class Archive>
-    void serialize_optimized(Archive &ar, const unsigned int version, mpl::true_ )
+    void serialize_optimized(Archive &ar, const unsigned int file_version, mpl::true_ )
     {
-      boost::serialization::split_member(ar, *this, version);
+      boost::serialization::split_member(ar, *this, file_version);
     }
 
     // default implementation
     template<class Archive>
-    void save(Archive &ar, const unsigned int version) const
+    void save(Archive &ar, const unsigned int file_version) const
     {
-      ar.save_array(*this,version);
+      ar.save_array(*this,file_version);
     }
 
     // default implementation
     template<class Archive>
-    void load(Archive &ar, const unsigned int version)
+    void load(Archive &ar, const unsigned int file_version)
     {
-      ar.load_array(*this,version);
+      ar.load_array(*this,file_version);
     }
 
     // default implementation
     template<class Archive>
-    void serialize(Archive &ar, const unsigned int version)
+    void serialize(Archive &ar, const unsigned int file_version)
     {
       typedef typename
           boost::serialization::use_array_optimization<Archive>::template apply<
                     typename remove_const< T >::type
                 >::type use_optimized;
-      serialize_optimized(ar,version,use_optimized());
+      serialize_optimized(ar,file_version,use_optimized());
     }
 
     T * address() const
